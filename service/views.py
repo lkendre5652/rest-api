@@ -2,14 +2,36 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer  
-from .models import Location
-from .serializer import LocationSerializer
+from .models import Location, ParentLocations
+from .serializer import LocationSerializer, ParentLocationSerializer
 # Create your views here.
 from rest_framework.response import Response
 from rest_framework import status, viewsets
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 from .custompermissions import myBasePermission
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
+
+class MyThrotal(viewsets.ModelViewSet):
+    queryset = ParentLocations.objects.all()
+    serializer_class = ParentLocationSerializer
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    throttle_classes = [UserRateThrottle, AnonRateThrottle]
+
+
+class MyLocationViewModelSet(viewsets.ModelViewSet):
+    queryset= ParentLocations.objects.all()
+    serializer_class = ParentLocationSerializer
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+class myLocation(viewsets.ViewSet):
+    def list(self,request):
+        lcData = ParentLocations.objects.all()
+        slrdata = ParentLocationSerializer(lcData, many=True)
+        return Response(slrdata.data)
 
 def getApi(request):
     return  HttpResponse(0)

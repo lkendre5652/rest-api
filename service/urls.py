@@ -6,6 +6,9 @@ from rest_framework.routers import DefaultRouter
 from service.auth import CustomToken
 router = DefaultRouter()
 
+router.register('my-throtal', views.MyThrotal, basename='my_throtal')
+router.register('my-location-api', views.MyLocationViewModelSet, basename='location_api')
+router.register('my-location', views.myLocation, basename='mylocation')
 router.register('location-api', views.getLocations, basename="location")
 router.register('location', views.Location, basename='go-location')
 router.register('readonly-locaton-api',views.ReadOnlyLocation, basename="readonly_api")
