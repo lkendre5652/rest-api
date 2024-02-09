@@ -11,13 +11,15 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 from .custompermissions import myBasePermission
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
-
+from service.throttle import LkRateThrottle
+ 
 class MyThrotal(viewsets.ModelViewSet):
     queryset = ParentLocations.objects.all()
     serializer_class = ParentLocationSerializer
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
-    throttle_classes = [UserRateThrottle, AnonRateThrottle]
+    # throttle_classes = [UserRateThrottle, AnonRateThrottle]
+    throttle_classes = [LkRateThrottle, AnonRateThrottle]
 
 
 class MyLocationViewModelSet(viewsets.ModelViewSet):

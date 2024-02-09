@@ -125,6 +125,7 @@ STATIC_URL = '/static/'
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES' : {
         'anon' : '2/day',
-        'user': '5/hour'
+        'user': '5/hour',
+        'lk' : '3/minute'
     }
 }
